@@ -11,6 +11,7 @@ export const Container = styled.View`
 	justify-content: space-between;
 	align-items: center;
 	padding-horizontal: ${metrics.basePadding};
+	background: ${colors.white};
 `;
 
 export const Left = styled.View``;
