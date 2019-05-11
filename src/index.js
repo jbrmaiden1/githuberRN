@@ -1,10 +1,19 @@
-import React from 'react';
-
+import React, { useState, useEffect } from 'react';
+import { AsyncStorage } from 'react-native';
 // import { Container } from './styles';
-import Routes from './routes';
+import createNavigator from './routes';
 
 import('./config/ReactotronConfig');
 
-const App = () => <Routes />;
+export default function App() {
+  const [userInfo, setUserinfo] = useState({ userChecked: false, userLogged: false });
 
-export default App;
+  useEffect(async () => {
+    const username = await AsyncStorage.getItem('@githuber:username');
+    setUserinfo({ userChecked: true, userLogged: !!username });
+  }, []);
+
+  const Routes = createNavigator(userInfo.userLogged);
+
+  return <Routes />;
+}
