@@ -29,6 +29,14 @@ export const Text = styled.Text`
 	line-height: 21;
 `;
 
+export const ErrorText = styled.Text`
+	text-align: center;
+	margin-top: ${metrics.baseMargin};
+	font-size: 15;
+	color: ${colors.danger};
+	line-height: 21;
+`;
+
 export const Input = styled.TextInput.attrs({
   autoCapitalize: 'none',
   autoCorrect: false,
@@ -55,3 +63,5 @@ export const ButtonText = styled.Text`
 	font-weight: bold;
 	font-size: 15;
 `;
+
+export const Loading = styled.ActivityIndicator``;

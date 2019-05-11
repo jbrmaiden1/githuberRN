@@ -1,23 +1,65 @@
-import React from 'react';
-import { StatusBar } from 'react-native';
+import React, { useState } from 'react';
+import { StatusBar, AsyncStorage } from 'react-native';
+import api from '../../services/api';
 import {
-  Container, Title, Text, Form, Input, Button, ButtonText,
+  Container,
+  Title,
+  Text,
+  Form,
+  Input,
+  Button,
+  ButtonText,
+  Loading,
+  ErrorText,
 } from './styles';
 
-const Welcome = () => (
-  <Container>
-    <StatusBar barStyle="light-content" />
-    <Title>Bem vindo</Title>
-    <Text>Para continuar, informe suas credenciais</Text>
+export default function Welcome({ navigation }) {
+  const [username, setUsername] = useState('');
+  const [helper, setHelper] = useState({ loading: false, error: false });
 
-    <Form>
-      <Input />
+  async function saveUser() {
+    await AsyncStorage.setItem('@githuber:username', username);
+  }
 
-      <Button>
-        <ButtonText>Entrar</ButtonText>
-      </Button>
-    </Form>
-  </Container>
-);
+  async function checkUserExists() {
+    const user = await api.get(`/users/${username}`);
 
-export default Welcome;
+    return user;
+  }
+
+  async function signIn() {
+    setHelper({ loading: true, error: false });
+    try {
+      await checkUserExists();
+      await saveUser();
+
+      navigation.navigate('Repositories');
+    } catch (err) {
+      setHelper({ loading: false, error: true });
+      console.tron.log('Usuario não existe');
+    }
+  }
+
+  function handleInput(text) {
+    setUsername(text);
+  }
+
+  console.tron.log(helper);
+  return (
+    <Container>
+      <StatusBar barStyle="light-content" />
+      <Title>Bem vindo</Title>
+      <Text>Para continuar, informe suas credenciais</Text>
+
+      {helper.error ? <ErrorText> Usuário inexistente</ErrorText> : null}
+
+      <Form>
+        <Input onChangeText={text => handleInput(text)} value={username} />
+
+        <Button onPress={() => signIn()}>
+          {helper.loading ? <Loading size="small" color="#FFF" /> : <ButtonText>Entrar</ButtonText>}
+        </Button>
+      </Form>
+    </Container>
+  );
+}
