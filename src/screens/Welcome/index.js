@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { StatusBar, AsyncStorage } from 'react-native';
+import PropTypes from 'prop-types';
+
 import api from '../../services/api';
 import {
   Container,
@@ -63,3 +65,9 @@ export default function Welcome({ navigation }) {
     </Container>
   );
 }
+
+Welcome.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};
