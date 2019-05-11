@@ -35,7 +35,7 @@ export default function Welcome({ navigation }) {
       await checkUserExists();
       await saveUser();
 
-      navigation.navigate('Repositories');
+      navigation.navigate('User');
     } catch (err) {
       setHelper({ loading: false, error: true });
       console.tron.log('Usuario não existe');
