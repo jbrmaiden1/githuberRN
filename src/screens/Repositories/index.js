@@ -1,23 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { View, AsyncStorage } from 'react-native';
+import { AsyncStorage } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import api from '../../services/api';
 import Header from '../../components/Header';
-import {
-  Container, Loading, RepoName, RepoList,
-} from './styles';
+import { Container, Loading, RepoList } from './styles';
 
 import RepositoryItem from './RepositoryItem';
 
 function Repositories() {
   const [repos, setRepos] = useState([]);
   const [helper, setHelper] = useState({ loading: true, refreshing: false });
-
-  useEffect(() => {
-    loadRepositories();
-  }, []);
 
   async function loadRepositories() {
     setHelper({ loading: false, refreshing: true });
@@ -27,6 +21,14 @@ function Repositories() {
     setRepos(data);
     setHelper({ loading: false, refreshing: false });
   }
+
+  function renderRepo({ item }) {
+    return <RepositoryItem repository={item} />;
+  }
+
+  useEffect(() => {
+    loadRepositories();
+  }, []);
 
   function renderList() {
     return (
@@ -40,11 +42,6 @@ function Repositories() {
     );
   }
 
-  function renderRepo({ item }) {
-    return <RepositoryItem repository={item} />;
-  }
-
-  console.tron.log(repos);
   return (
     <Container>
       <Header title="Repositórios" />

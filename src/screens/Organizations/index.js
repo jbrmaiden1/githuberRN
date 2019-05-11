@@ -1,16 +1,56 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { View } from 'react-native';
+
+import { AsyncStorage } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import api from '../../services/api';
 import Header from '../../components/Header';
+import styles, { Container, Loading, RepoList } from './styles';
 
-// import { Container } from './styles';
+import OrganizationItem from './OrganizationItem';
 
-function Organization() {
+function Organizations() {
+  const [organizations, setOrganizations] = useState([]);
+  const [helper, setHelper] = useState({ loading: true, refreshing: false });
+
+  async function loadOrganizations() {
+    setHelper({ loading: false, refreshing: true });
+    const username = await AsyncStorage.getItem('@githuber:username');
+    const { data } = await api.get(`/users/${username}/orgs`);
+
+    setOrganizations(data);
+    setHelper({ loading: false, refreshing: false });
+  }
+
+  function renderOrganizations({ item }) {
+    return <OrganizationItem organization={item} />;
+  }
+
+  useEffect(() => {
+    loadOrganizations();
+  }, []);
+
+  console.tron.log('meu ovo');
+  console.tron.log(organizations);
+  function renderList() {
+    return (
+      <RepoList
+        data={organizations}
+        keyExtractor={item => String(item.id)}
+        renderItem={renderOrganizations}
+        onRefresh={loadOrganizations}
+        numColumns={2}
+        columnWrapperStyle={styles.columnWrapper}
+        refreshing={helper.refreshing}
+      />
+    );
+  }
+
   return (
-    <View>
+    <Container>
       <Header title="Organizações" />
-    </View>
+      {helper.loading ? <Loading /> : renderList()}
+    </Container>
   );
 }
 
@@ -20,8 +60,8 @@ TabIcon.propTypes = {
   tintColor: PropTypes.string.isRequired,
 };
 
-Organization.navigationOptions = {
+Organizations.navigationOptions = {
   tabBarIcon: TabIcon,
 };
 
-export default Organization;
+export default Organizations;

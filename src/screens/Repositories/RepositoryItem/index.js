@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { colors, metrics } from '../../../styles';
+import { colors } from '../../../styles';
 
 import {
   Container, Title, InfoContainer, Info, InfoText,
