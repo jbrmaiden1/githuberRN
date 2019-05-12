@@ -30,8 +30,6 @@ function Organizations() {
     loadOrganizations();
   }, []);
 
-  console.tron.log('meu ovo');
-  console.tron.log(organizations);
   function renderList() {
     return (
       <RepoList

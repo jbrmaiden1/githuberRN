@@ -14,7 +14,7 @@ function Repositories() {
   const [helper, setHelper] = useState({ loading: true, refreshing: false });
 
   async function loadRepositories() {
-    setHelper({ loading: false, refreshing: true });
+    setHelper({ loading: true, refreshing: true });
     const username = await AsyncStorage.getItem('@githuber:username');
     const { data } = await api.get(`/users/${username}/repos`);
 

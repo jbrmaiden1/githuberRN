@@ -38,7 +38,6 @@ export default function Welcome({ navigation }) {
       navigation.navigate('User');
     } catch (err) {
       setHelper({ loading: false, error: true });
-      console.tron.log('Usuario não existe');
     }
   }
 
@@ -46,7 +45,6 @@ export default function Welcome({ navigation }) {
     setUsername(text);
   }
 
-  console.tron.log(helper);
   return (
     <Container>
       <StatusBar barStyle="light-content" />
